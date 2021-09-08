@@ -1,21 +1,17 @@
-import React, { useState } from 'react';
-import MenuItem from '../Menu-item/MenuItem';
-import './Directory.style.scss';
-import sections from './data';
+import React, { useState } from "react";
+import MenuItem from "../Menu-item/MenuItem";
+import "./Directory.style.scss";
+import sections from "./data";
 
 const Directory = () => {
-    const [section, setSection] = useState(sections)
-    return (
-        <div className='directory-menu'>
+  const [section, setSection] = useState(sections);
+  return (
+    <div className="directory-menu">
+      {section.map(({ id, ...otherprosps }) => (
+        <MenuItem key={id} {...otherprosps} />
+      ))}
+    </div>
+  );
+};
 
-            {
-                section.map(({ title, imageUrl, id, size })=>(
-                    <MenuItem key={id} title={title} imageUrl={imageUrl} size={size}/> 
-                ))
-            }
-           
-        </div>
-    )
-}
-
-export default Directory
+export default Directory;
