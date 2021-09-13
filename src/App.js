@@ -9,12 +9,16 @@ import Signin_Signup from "./Pages/Signin-and-Signup-page/Signin_Signup";
 import { useEffect, useState } from "react";
 import { auth, createUserProfileDocument } from "./Firebase/Firebase.utils";
 import { onSnapshot } from "firebase/firestore";
+import { connect } from "react-redux";
+import { setCurrentUser } from "./Redux/User/User.action";
 
-function App() {
-  const [currentUser, setCurrentUser] = useState(null);
+class App extends React.Component {
+  // unsubscribeFromAuth = null;
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (userAuth) => {
+  componentDidMount() {
+    const { setCurrentUser } = this.props;
+
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const docRef = await createUserProfileDocument(userAuth);
 
@@ -25,28 +29,36 @@ function App() {
       }
       setCurrentUser(userAuth);
     });
+  }
 
-    return unsubscribe;
-  }, [currentUser]);
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
+  }
 
-  return (
-    <div>
-      <Router>
-        <Header currentUser={currentUser} />
-        <Switch>
-          <Route exact path="/">
-            <Homepage />
-          </Route>
-          <Route path="/shop">
-            <Shop />
-          </Route>
-          <Route path="/signin">
-            <Signin_Signup />
-          </Route>
-        </Switch>
-      </Router>
-    </div>
-  );
+  render() {
+    return (
+      <div>
+        <Router>
+          <Header />
+          <Switch>
+            <Route exact path="/">
+              <Homepage />
+            </Route>
+            <Route path="/shop">
+              <Shop />
+            </Route>
+            <Route path="/signin">
+              <Signin_Signup />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(App);
