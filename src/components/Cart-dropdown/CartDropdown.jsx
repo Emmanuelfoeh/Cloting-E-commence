@@ -5,15 +5,30 @@ import { connect } from "react-redux";
 import "./Cartdropdown.scss";
 import { selectCartItems } from "../../Redux/Cart/cart.selector";
 import { createStructuredSelector } from "reselect";
-const CartDropdown = ({ cartItems }) => {
+import { useHistory } from "react-router";
+import { toggleCartHidden } from "../../Redux/Cart/Cart.action";
+// import { withRouter } from "react-router";
+const CartDropdown = ({ cartItems, dispatch }) => {
+  const history = useHistory();
   return (
     <div className="cart-dropdown">
       <div className="cart-items">
-        {cartItems.map((cartItem) => (
-          <CartItem key={cartItem.id} item={cartItem} />
-        ))}
+        {cartItems.length ? (
+          cartItems.map((cartItem) => (
+            <CartItem key={cartItem.id} item={cartItem} />
+          ))
+        ) : (
+          <span className="cart-message">Your cart is empty</span>
+        )}
       </div>
-      <CustomButton>GO TO CHECKUP</CustomButton>
+      <CustomButton
+        onClick={() => {
+          history.push("/checkout");
+          dispatch(toggleCartHidden());
+        }}
+      >
+        GO TO CHECKUP
+      </CustomButton>
     </div>
   );
 };
