@@ -3,7 +3,7 @@ const sections = [
     title: "hats",
     imageUrl: "https://i.ibb.co/cvpntL1/hats.png",
     id: 1,
-    linkURl: "hats",
+    linkURl: "shop/hats",
   },
   {
     title: "jackets",

@@ -11,7 +11,6 @@ import {
 import Header from "./components/Header/Header";
 import Signin_Signup from "./Pages/Signin-and-Signup-page/Signin_Signup";
 
-import { useEffect, useState } from "react";
 import { auth, createUserProfileDocument } from "./Firebase/Firebase.utils";
 import { onSnapshot } from "firebase/firestore";
 import { connect } from "react-redux";
